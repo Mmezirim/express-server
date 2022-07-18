@@ -1,43 +1,44 @@
 const express = require('express'),
       path = require('path'),
-      nodemMailer = require('nodemailer'),
-      app = express,
-      bodyParser = require('body-parser'),
- { application } = require('express');
-app.set('view engine', 'ejs');
-app.use(expresss.static('/style'));
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+      nodeMailer = require('nodemailer'),
+      bodyParser = require('body-parser');
 
-app.get('/', (req,res) =>{
-    res.render('index');
-})
+const app = express();
+      app.set('view engine', 'ejs');
+      app.use(express.static(path.join(__dirname, 'public')));
+      app.use(bodyParser.urlencoded({extended: true}));
+      app.use(bodyParser.json());
 
-app.post('/send-email', (req,res) =>{
-    let transporter = nodeMailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user: 'nnamdichimmezirim@xx.com',
-            pass: 'meeeee'
-        }
+    app.get('/', function (req, res) {
+      res.render('index');
     });
-    let mailOptions = {
-        from: '"Krunal Lathiya" <Krunal Lathiya@gmail.com>',
-        to: req.body.to,
-        subject: req.body.subject, 
-        text: req.body.body,
-    };
+    app.post('/send-email', function (req, res) {
+      let transporter = nodeMailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 465,
+          secure: true,
+          auth: {
+              user: 'xxx@xx.com',
+              pass: 'xxxx'
+          }
+      });
+      let mailOptions = {
+          from: '"Michael smith" <mikeross@gmail.com>',
+          to: req.body.to,
+          subject: req.body.subject,
+          text: req.body.body,
+      };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message %s sent: %s', info.messageId, info.response);
-            res.render('index');
-        });
-})
-app.listen = (3000,(req, res) =>{
-    console.log('My server is running on port 3000')
-});
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              return console.log(error);
+          }
+          console.log('Message %s sent: %s', info.messageId, info.response);
+              res.render('index');
+          });
+      });
+
+      const port = 3000;
+          app.listen(port, function(){
+            console.log('Server is running at port: ',port);
+          });
